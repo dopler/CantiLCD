@@ -1,6 +1,5 @@
 /**************************************************************************
   This is a library for several Adafruit displays based on ST77* drivers.
-
   Works with the Adafruit 1.8" TFT Breakout w/SD card
     ----> http://www.adafruit.com/products/358
   The 1.8" TFT shield
@@ -9,15 +8,12 @@
     ----> https://www.adafruit.com/product/2088
   as well as Adafruit raw 1.8" TFT display
     ----> http://www.adafruit.com/products/618
-
   Check out the links above for our tutorials and wiring diagrams.
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional).
-
   Adafruit invests time and resources providing this open source code,
   please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
-
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
  **************************************************************************/
@@ -73,7 +69,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 //Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 float p = 3.1415926;
-int images[6];
+int images[7];
 
 
 
@@ -109,7 +105,7 @@ void setup(void)
   
   randomSeed(analogRead(0));
   //initialize images array;
-  for(int i = 0; i < 6; i++)
+  for(int i = 0; i < 7; i++)
   {
     images[i] = i;
   }
@@ -121,20 +117,22 @@ void loop()
   int randTiming = random(5000,10000);
 
   //randomize the array;
-  for(int i = 0; i < 6; i++)
+  for(int i = 0; i < 7; i++)
   {
-    int r = random(6);
+    int r = random(7);
     int temp = images[i];
     images[i] = images[r];
     images[r] = temp;
   }
 
   DrawRainbow();
+  Serial.println("Reset");
   delay(randTiming);
 
-  for(int i = 0; i < 6; i++)
+  for(int i = 0; i < 7; i++)
   {
     DrawImage(images[i], randTiming);
+    Serial.println(images[i]);
   }
   
 }
@@ -178,6 +176,12 @@ void DrawImage(int index, int timing)
     case 5:
     tft.fillScreen(ST7735_MAGENTA);
     DrawBMP(Ninamori, 128, 128, 0, 0, ST7735_BLACK);
+    delay(timing);
+    break;
+
+    case 6:
+    tft.fillScreen(ST7735_ORANGE);
+    DrawBMP(Climax, 128, 128, 0, 0, ST7735_BLACK);
     delay(timing);
     break;   
   }  
